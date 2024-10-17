@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>AGUAS CERCANAS</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free Website Template" name="keywords">
+    <meta content="Free Website Template" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/style.min.css" rel="stylesheet">
+
+    <style>
+        .page-header {
+            background: linear-gradient(rgba(51, 33, 29, 0.9), rgba(51, 33, 29, 0.9)), url('ruta/a/tu/nueva-imagen.jpg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            min-height: 400px;
+        }
+
+        /* Mapa */
+        #map {
+            height: 400px; /* Ajusta la altura del mapa */
+            width: 100%; /* Anchura del mapa */
+        }
+
+        /* Estilo para el mensaje de error */
+        #mensaje {
+            color: red;
+            display: none; /* Ocultar el mensaje inicialmente */
+            margin-top: 10px; /* Espaciado superior */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar Start -->
+    <div class="container-fluid p-0 nav-bar">
+        <nav class="navbar navbar-expand-lg bg-none navbar-dark py-3">
+            <a href="index.html" class="navbar-brand px-lg-4 m-0">
+                <h1 class="m-0 display-4 text-uppercase text-white">AGUAS CERCANAS</h1>
+            </a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                <div class="navbar-nav ml-auto p-4">
+                    <a href="index.html" class="nav-item nav-link">HOME</a>
+                    <a href="about.html" class="nav-item nav-link">MAPA</a>
+                    <a href="service.html" class="nav-item nav-link">FILTROS</a>
+                    <div class="nav-item dropdown">
+                        <div class="dropdown-menu text-capitalize">
+                        </div>
+                    </div>
+                    <a href="contact.html" class="nav-item nav-link active">NOSOTROS</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Navbar End -->
+
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header mb-5 position-relative overlay-bottom">
+        <div class="d-flex flex-column align-items-center justify-content-center pt-0 pt-lg-5" style="min-height: 400px">
+            <div class="d-inline-flex mb-lg-5">
+                <p class="m-0 text-white"><a class="text-white" href=""></a></p>
+                <p class="m-0 text-white px-2">INTRODUCE TU UBICACIÓN ACTUAL PARA PODER ACCEDER A LA FUNCIONALIDAD MAPA</p>
+            </div>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+    <!-- Contact Start -->
+    <div class="container-fluid pt-5">
+        <div class="container">
+            <div class="section-title">
+                <h4 class="text-primary text-uppercase" style="letter-spacing: 5px;">Encuentra Embalses</h4>
+                <h1 class="display-4">Introduce tus Coordenadas</h1>
+            </div>
+            <div class="row">
+                <div class="col-md-6 pb-5">
+                    <input type="text" id="lat" class="form-control mb-3" placeholder="Latitud" required>
+                    <input type="text" id="lng" class="form-control mb-3" placeholder="Longitud" required>
+                    <input type="number" id="radius" class="form-control mb-3" placeholder="Radio (km)" value="100" min="1" required>
+                    <button class="btn btn-primary" id="showMapBtn">Mostrar Mapa</button>
+                    <button class="btn btn-secondary" id="loadDataBtn">Cargar Embalses</button>
+                    <div id="map"></div>
+                    <!-- Mensaje de error -->
+                    <div id="mensaje">Hemos hecho todo lo posible para mostrar los datos, pero no ha sido posible.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Contact End -->
+
+    <!-- Footer Start -->
+    <div class="container-fluid footer text-white mt-5 pt-5 px-0 position-relative overlay-top">
+        <!-- El contenido del pie de página -->
+    </div>
+    <!-- Footer End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/tempusdominus/js/moment.min.js"></script>
+    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <!-- Custom Script para el Mapa -->
+    <script>
+        let map; // Variable para el mapa
+        let circle; // Variable para el círculo
+        let userMarker; // Variable para el marcador de usuario
+
+        function initMap(lat, lng, radius) {
+            const location = [lat, lng];
+
+            // Si el mapa no ha sido creado, lo inicializamos
+            if (!map) {
+                map = L.map('map').setView(location, 8); // Ajusta el nivel de zoom según sea necesario
+
+                // Capa de mapa de OpenStreetMap
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+            } else {
+                // Si el mapa ya existe, solo lo centramos en la nueva ubicación
+                map.setView(location);
+            }
+
+            // Eliminar el círculo anterior si existe
+            if (circle) {
+                map.removeLayer(circle);
+            }
+
+            // Crear un nuevo círculo con el radio especificado por el usuario
+            circle = L.circle(location, {
+                color: 'blue',
+                fillColor: '#30f',
+                fillOpacity: 0.5,
+                radius: radius * 1000 // Convertir a metros
+            }).addTo(map);
+
+            // Eliminar el marcador anterior si existe
+            if (userMarker) {
+                map.removeLayer(userMarker);
+            }
+
+            // Crear un nuevo marcador en la ubicación ingresada por el usuario
+            userMarker = L.marker(location, {
+                icon: L.icon({
+                    iconUrl: 'https://unpkg.com/leaflet/dist/images/marker-icon.png', // Marcador rojo predeterminado
+                    iconSize: [25, 41]
+                })
+            }).addTo(map).bindPopup("Ubicación del usuario").openPopup();
+        }
+
+        document.getElementById("showMapBtn").addEventListener("click", function () {
+            const lat = parseFloat(document.getElementById("lat").value);
+            const lng = parseFloat(document.getElementById("lng").value);
+            const radius = parseFloat(document.getElementById("radius").value);
+            initMap(lat, lng, radius);
+        });
+
+        // Función para cargar los datos de la API
+        function loadEmbalses() {
+            $.ajax({
+                url: 'https://g9e7c4763464a15-umapromises.adb.eu-madrid-1.oraclecloudapps.com/ords/javier_campos/todo_junto/',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data);
+
+                    // Asegúrate de que "data.items" existe y contiene los datos
+                    if (data.items && Array.isArray(data.items)) {
+                        // Añadir marcadores para cada embalse
+                        data.items.forEach(function(item) {
+                            const lat = item.y; // Asegúrate de que la propiedad es correcta
+                            const lng = item.x; // Asegúrate de que la propiedad es correcta
+                            console.log(`Añadiendo marcador en: ${lat}, ${lng}`);
+                            L.marker([lat, lng], {
+                                icon: L.icon({
+                                    iconUrl: 'ruta/a/icono_rojo.png', // Asegúrate de que la ruta sea correcta
+                                    iconSize: [25, 41]
+                                })
+                            }).addTo(map);
+                        });
+                        // Ocultar mensaje si se cargan los datos correctamente
+                        document.getElementById("mensaje").style.display = "none";
+                    } else {
+                        console.error('No se encontraron embalses.');
+                        document.getElementById("mensaje").style.display = "block"; // Mostrar mensaje si no hay datos
+                    }
+                },
+                error: function(err) {
+                    console.error('Error al cargar datos:', err);
+                    document.getElementById("mensaje").style.display = "block"; // Mostrar mensaje en caso de error
+                }
+            });
+        }
+
+        document.getElementById("loadDataBtn").addEventListener("click", loadEmbalses);
+    </script>
+</body>
+
+</html>

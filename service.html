@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos de API REST en Tabla</title>
+    <!-- Incluir jQuery desde un CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="filtro.js" defer></script>
+    <!-- Añadir un poco de estilo para la tabla -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9f4fb; /* Fondo suave */
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #007bff; /* Tono azul para el encabezado */
+        }
+
+        button {
+            background-color: #007bff; /* Color de fondo azul */
+            color: white; /* Color de texto blanco */
+            border: none; /* Sin borde */
+            border-radius: 5px; /* Bordes redondeados */
+            padding: 10px 15px; /* Relleno */
+            cursor: pointer; /* Cambiar cursor */
+            margin: 5px;
+            transition: background-color 0.3s; /* Transición suave */
+        }
+
+        button:hover {
+            background-color: #0056b3; /* Color más oscuro al pasar el ratón */
+        }
+
+        #filters {
+            background-color: #ffffff; /* Fondo blanco para filtros */
+            border-radius: 8px; /* Bordes redondeados */
+            padding: 15px;
+            margin-bottom: 20px; /* Espacio inferior */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px; /* Margen superior */
+            border-radius: 8px; /* Bordes redondeados */
+            overflow: hidden; /* Para bordes redondeados */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+        }
+
+        table, th, td {
+            border: 1px solid #007bff; /* Bordes azules */
+        }
+
+        th, td {
+            padding: 12px; /* Relleno */
+            text-align: left;
+        }
+
+        th {
+            background-color: #007bff; /* Fondo azul para encabezados */
+            color: white; /* Texto blanco para encabezados */
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f2f9ff; /* Color de fondo alternativo para filas */
+        }
+
+        #statistics {
+            background-color: #ffffff; /* Fondo blanco para estadísticas */
+            border-radius: 8px; /* Bordes redondeados */
+            padding: 15px;
+            margin-top: 20px; /* Margen superior */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+        }
+
+        #statistics p {
+            margin: 5px 0; /* Margen superior e inferior para párrafos */
+        }
+    </style>
+</head>
+<body>
+
+     <!-- Navbar Start -->
+     <div class="container-fluid p-0 nav-bar">
+        <nav class="navbar navbar-expand-lg bg-none navbar-dark py-3">
+            <a href="index.html" class="navbar-brand px-lg-4 m-0">
+                <h1 class="m-0 display-4 text-uppercase text-white">Pulse aqui para volver a la Página Web</h1>
+            </a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                <div class="navbar-nav ml-auto p-4">
+                    <a href="index.html" class="nav-item nav-link active">Home</a>
+                    <a href="about.html" class="nav-item nav-link">About</a>
+                    <a href="service.html" class="nav-item nav-link">Filtros</a>
+                    <div class="nav-item dropdown">
+                        <div class="dropdown-menu text-capitalize">
+                        </div>
+                    </div>
+                    <a href="contact.html" class="nav-item nav-link">Nosotros</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Navbar End -->
+    <h1>Datos obtenidos de la API</h1>
+    <button id="btnFetch">Obtener Datos</button>
+    
+    <!-- Filtros para los atributos -->
+    <div id="filters">
+        <label for="attribute">Atributo:</label>
+        <select id="attribute">
+            <option value="id">ID</option>
+            <option value="ambito_nombre">Ámbito Nombre</option>
+            <option value="embalse_nombre">Embalse Nombre</option>
+            <option value="agua_total">Agua Total</option>
+            <option value="electrico_flag">Eléctrico Flag</option>
+            <option value="codigo">Código</option>
+            <option value="nombre">Nombre</option>
+            <option value="embalse">Embalse</option>
+            <option value="x">X</option>
+            <option value="y">Y</option>
+            <option value="demarc">Demarc</option>
+            <option value="cauce">Cauce</option>
+            <option value="google">Google</option>
+            <option value="openstreetmap">OpenStreetMap</option>
+            <option value="wikidata">Wikidata</option>
+            <option value="provincia">Provincia</option>
+            <option value="ccaa">CCAA</option>
+            <option value="tipo">Tipo</option>
+            <option value="cota_coron">Cota Coron</option>
+            <option value="alt_cimien">Alt Cimiento</option>
+            <option value="informe">Informe</option>
+            <option value="liks">Liks</option>
+        </select>
+        <label for="filter">Filtro:</label>
+        <input type="text" id="filter" placeholder="Escribe el filtro..." style="padding: 8px;">
+        <button id="btnFilter">Aplicar Filtro</button>
+    </div>
+
+    <!-- Tabla para mostrar los datos -->
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ámbito Nombre</th>
+                <th>Embalse Nombre</th>
+                <th>Agua Total</th>
+                <th>Eléctrico Flag</th>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Embalse</th>
+                <th>X</th>
+                <th>Y</th>
+                <th>Demarc</th>
+                <th>Cauce</th>
+                <th>Google</th>
+                <th>OpenStreetMap</th>
+                <th>Wikidata</th>
+                <th>Provincia</th>
+                <th>CCAA</th>
+                <th>Tipo</th>
+                <th>Cota Coron</th>
+                <th>Alt Cimiento</th>
+                <th>Informe</th>
+                <th>Liks</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Aquí se generarán las filas de datos dinámicamente -->
+        </tbody>
+    </table>
+
+    <!-- Área para mostrar las estadísticas -->
+    <div id="statistics">
+        <p>Máximo: <span id="maxValue"></span></p>
+        <p>Mínimo: <span id="minValue"></span></p>
+        <p>Media: <span id="meanValue"></span></p>
+        <!-- Añadir más estadísticas según sea necesario -->
+    </div>
+
+    <!-- Archivo JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>

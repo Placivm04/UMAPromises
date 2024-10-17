@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Contacto - Proyecto Hídrico</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Proyecto Hídrico" name="keywords">
+    <meta content="Información hídrica sobre embalses" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/style.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navbar Start -->
+    <div class="container-fluid p-0 nav-bar">
+        <nav class="navbar navbar-expand-lg bg-none navbar-dark py-3">
+            <a href="index.html" class="navbar-brand px-lg-4 m-0">
+                <h1 class="m-0 display-4 text-uppercase text-white">Proyecto Hídrico</h1>
+            </a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                <div class="navbar-nav ml-auto p-4">
+                    <a href="index.html" class="nav-item nav-link">Home</a>
+                    <a href="about.html" class="nav-item nav-link">About</a>
+                    <a href="service.html" class="nav-item nav-link">Service</a>
+                    <a href="contact.html" class="nav-item nav-link active">Nosotros</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Navbar End -->
+
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header mb-5 position-relative overlay-bottom">
+        <div class="d-flex flex-column align-items-center justify-content-center pt-0 pt-lg-5" style="min-height: 400px">
+            <h1 class="display-4 mb-3 mt-0 mt-lg-5 text-white text-uppercase">Contacto</h1>
+            <div class="d-inline-flex mb-lg-5">
+            </div>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+    <!-- Contact Start -->
+    <div class="container-fluid pt-5">
+        <div class="container">
+            <div class="section-title">
+                <h4 class="text-primary text-uppercase" style="letter-spacing: 5px;">Contáctanos</h4>
+                <h1 class="display-4">Somos un equipo de ingenieros</h1>
+            </div>
+            <div class="row px-3 pb-2">
+                <div class="col-md-12 text-center mb-3">
+                    <p>Somos cinco ingenieros trabajando en un proyecto que tiene como objetivo desarrollar una aplicación para proporcionar información hídrica sobre los embalses, utilizando una base de datos confiable y actualizada.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 pb-5">
+                    <h2 class="text-primary">¿Quiénes somos?</h2>
+                    <p>Un equipo de cinco ingenieros apasionados por la tecnología y el medio ambiente. Creemos en la importancia de proporcionar acceso a información hídrica, lo que puede ayudar a la gestión de recursos y la sostenibilidad.</p>
+                    <img src="https://st3.depositphotos.com/11788938/19217/v/450/depositphotos_192176364-stock-illustration-engineers-cartoon-characters-isolated-on.jpg" alt="Equipo de Ingenieros" class="img-fluid mb-3">
+                </div>
+                <div class="col-md-6 pb-5">
+                    <h2 class="text-primary">Nuestra Misión</h2>
+                    <p>Nuestra misión es desarrollar una aplicación intuitiva y accesible que permita a los usuarios obtener información crítica sobre el estado de los embalses en tiempo real.</p>
+                    <img src="https://precisionglobal.com/wp-content/uploads/2020/10/Mission-scaled.jpg" alt="Información Hídrica" class="img-fluid mb-3">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 pb-5">
+                    <h2 class="text-primary">Contáctanos</h2>
+                    <form name="sentMessage" id="contactForm" novalidate="novalidate">
+                        <div class="control-group">
+                            <input type="text" class="form-control bg-transparent p-4" id="name" placeholder="Tu Nombre" required="required" data-validation-required-message="Por favor ingresa tu nombre" />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="control-group">
+                            <input type="email" class="form-control bg-transparent p-4" id="email" placeholder="Tu Email" required="required" data-validation-required-message="Por favor ingresa tu email" />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="control-group">
+                            <input type="text" class="form-control bg-transparent p-4" id="subject" placeholder="Asunto" required="required" data-validation-required-message="Por favor ingresa un asunto" />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="control-group">
+                            <textarea class="form-control bg-transparent py-3 px-4" rows="5" id="message" placeholder="Mensaje" required="required" data-validation-required-message="Por favor ingresa tu mensaje"></textarea>
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary font-weight-bold py-3 px-5" type="submit" id="sendMessageButton">Enviar Mensaje</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-6 pb-5">
+                    <div class="contact-info">
+                        <h4 class="font-weight-bold">Información de contacto</h4>
+                        <p><i class="fa fa-map-marker-alt mr-2"></i>Dirección: Calle Uma, 123, Malaga, España</p>
+                        <p><i class="fa fa-phone-alt mr-2"></i>Teléfono: +34 xxxxxxxxx</p>
+                        <p><i class="far fa-envelope mr-2"></i>Email: aguacercanas@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Contact End -->
+
+    <!-- Footer Start -->
+    <div class="container-fluid footer text-white mt-5 pt-5 px-0 position-relative overlay-top">
+        <div class="container text-center">
+            <p class="mb-2 text-white">Copyright &copy; <a class="font-weight-bold" href="#">Proyecto Hídrico</a>. Todos los Derechos Reservados.</p>
+            <p class="m-0 text-white">Diseñado por <a class="font-weight-bold" href="https://htmlcodex.com">Uma promises</a></p>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+</body>
+
+</html>
